@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
     if (err) {
       return res.status(401).send('Invalid authorisation token');
     }
-
+// Add secret key later, get sendgrid email
     req.userId = payload.userId;
     next();
   });
