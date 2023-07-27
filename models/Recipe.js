@@ -5,8 +5,8 @@ const RecipeSchema = new mongoose.Schema({
   ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }],
   effects: [{ type: String }],
   category: { type: String },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  imageFilename: { type: String, required: true },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
+  imageFilename: { type: String, required: false },
 });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);
