@@ -7,7 +7,8 @@ mongoose.connect('mongodb://localhost:27017/myKitchenHyrules', { useNewUrlParser
 
 // Array to hold the ingredient data
 const ingredients = [
-    { name: 'Apple', imageFilename: 'src/assets/ingredient-icons/apple.png' },
+  
+  // In-game classification:"Ingredient"
     { name: 'Acorn', imageFilename: 'assets/ingredient-icons/acorn.png' },
     { name: 'Bird Egg', imageFilename: 'assets/ingredient-icons/bird-egg.png' },
     { name: 'Cane Sugar', imageFilename: 'cane-sugar.png' },
@@ -22,16 +23,16 @@ const ingredients = [
     { name: 'Monster Extract', imageFilename: 'assets/ingredient-icons/monster-extract.png' },
     { name: 'Tabantha Wheat', imageFilename: 'assets/ingredient-icons/tabantha-wheat.png' },
 
+  // In-game classification: Vegetable
+    {name: 'Big Hearty Radish', imageFilename: 'assets/ingredient-icons/big-hearty-radish.png'},
+    {name: 'Endura Carrot', imageFilename: 'assets/ingredient-icons/endura-carrot.png'},
+    {name: 'Fortified Pumpkin', imageFilename: 'assets/ingredient-icons/fortified-pumpkin.png'},
+    {name: 'Hearty Radish', imageFilename: 'assets/ingredient-icons/hearty-radish.png'},
+    {name: 'Sun Pumpkin', imageFilename: 'assets/ingredient-icons/sun-pumpkin.png'},
+    {name: 'Swift Carrot', imageFilename: 'assets/ingredient-icons/swift-carrot.png'},
 
-    // import birdegg from './assets/ingredient-icons/bird-egg.png'
-    // import bigheartyradish from './assets/ingredient-icons/big-hearty-radish.png'
-    // import enduracarrot from './assets/ingredient-icons/endura-carrot.png'
-    // import fortifiedpumpkin from './assets/ingredient-icons/fortified-pumpkin.png'
-    // import heartyradish from './assets/ingredient-icons/hearty-radish.png'
-    // import sunpumpkin from './assets/ingredient-icons/sun-pumpkin.png'
-    // import swiftcarrot from './assets/ingredient-icons/swift-carrot.png'
-
-  // ...
+  // In-game classification:"Fruit"
+    { name: 'Apple', imageFilename: 'src/assets/ingredient-icons/apple.png' },
 ];
 
 async function populateIngredients() {

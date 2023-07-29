@@ -41,8 +41,11 @@ router.post('/recipes', async (req, res) => {
   try {
     const { name, effects, ingredients, image } = req.body;
 
+    console.log("Incoming Request Body: ", req.body); // Added this line for debugging
+
     // Convert ingredient names to ids
-    const ingredientDocs = await Ingredient.find({ name: { $in: ingredients } });
+    const ingredientPromises = ingredients.map(ingredientName => Ingredient.findOne({ name: ingredientName }));
+    const ingredientDocs = await Promise.all(ingredientPromises);
     const ingredientIds = ingredientDocs.map(ingredient => ingredient._id);
 
     const newRecipe = new Recipe({
@@ -52,6 +55,8 @@ router.post('/recipes', async (req, res) => {
       image,
       // createdBy: req.user._id, // Uncomment this if you want to save who created the recipe
     });
+
+    console.log("New Recipe before save: ", newRecipe); // Added this line for debugging
 
     await newRecipe.save();
 
