@@ -33,6 +33,8 @@ const ingredients = [
 
   // In-game classification:"Fruit"
     { name: 'Apple', imageFilename: 'src/assets/ingredient-icons/apple.png' },
+
+    { name: 'Dark Clump', imageFilename: 'src/assets/ingredient-icons/dark-clump.png' },
 ];
 
 async function populateIngredients() {
