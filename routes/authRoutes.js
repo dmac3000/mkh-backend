@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/recipes', async (req, res) => {
   try {
-    const { name, effects, ingredients, image } = req.body;
+    const { name, effects, ingredients, imageFilename, description } = req.body;  // include description here
 
     console.log("Incoming Request Body: ", req.body); // Added this line for debugging
 
@@ -48,14 +48,18 @@ router.post('/recipes', async (req, res) => {
     const ingredientDocs = await Promise.all(ingredientPromises);
     const ingredientIds = ingredientDocs.map(ingredient => ingredient._id);
 
+    console.log("Incoming image: ", imageFilename);  // <-- Corrected line
+
     const newRecipe = new Recipe({
       name,
       effects,
       ingredients: ingredientIds,
-      imageFilename: image,
+      imageFilename,
+      description,  // and here
       // createdBy: req.user._id, // Uncomment this if you want to save who created the recipe
     });
 
+    console.log("New Recipe imageFilename: ", newRecipe.imageFilename);
     console.log("New Recipe before save: ", newRecipe); // Added this line for debugging
 
     await newRecipe.save();
@@ -88,8 +92,5 @@ router.get('/recipes/:id', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
-
-
-
 
 module.exports = router;
