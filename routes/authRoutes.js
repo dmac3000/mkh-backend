@@ -52,7 +52,7 @@ router.post('/recipes', async (req, res) => {
       name,
       effects,
       ingredients: ingredientIds,
-      image,
+      imageFilename: image,
       // createdBy: req.user._id, // Uncomment this if you want to save who created the recipe
     });
 
@@ -76,5 +76,20 @@ router.get('/ingredients', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+// Get a single recipe
+router.get('/recipes/:id', async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id).populate('ingredients');
+    console.log(recipe);  // Add this line
+    res.status(200).json(recipe);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
+
 
 module.exports = router;
