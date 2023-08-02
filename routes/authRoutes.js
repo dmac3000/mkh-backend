@@ -81,6 +81,35 @@ router.get('/ingredients', async (req, res) => {
   }
 });
 
+//  search route
+router.get('/recipes/search', async (req, res) => {
+  try {
+    const term = req.query.term;
+    const recipes = await Recipe.find({
+      $text: {
+        $search: term,
+      },
+    }).populate('ingredients'); // populate the ingredients field debugging
+    res.status(200).json(recipes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
+
+//  Get all recipes
+router.get('/recipes', async (req, res) => {
+  try {
+    const recipes = await Recipe.find().populate('ingredients');
+    res.status(200).json(recipes);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 // Get a single recipe
 router.get('/recipes/:id', async (req, res) => {
   try {
@@ -92,5 +121,9 @@ router.get('/recipes/:id', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+
+
+
 
 module.exports = router;
