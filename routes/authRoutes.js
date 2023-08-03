@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
     if (!isValid) return res.status(400).json({ message: 'Invalid password' });
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '2h' });
 
-    res.json({ token, userId: user._id }); 
+    res.json({ token, userId: user._id, username: user.username }); 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/recipes', async (req, res) => {
   try {
-    const { name, effects, ingredients, imageFilename, description, userId } = req.body;  // include description here
+    const { name, effects, ingredients, imageFilename, description, userId } = req.body;  
 
     console.log("Incoming Request Body: ", req.body); // Added this line for debugging
 
