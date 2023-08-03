@@ -6,7 +6,7 @@ const RecipeSchema = new mongoose.Schema({
   ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }],
   effects: [{ type: String }],
   category: { type: String },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   imageFilename: { type: String, required: false },
 });
 

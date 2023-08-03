@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // Import the cors module
 const authRoutes = require('./routes/authRoutes');
+require('dotenv').config()
 
 const app = express();
 app.use(cors()); // Use the cors middleware

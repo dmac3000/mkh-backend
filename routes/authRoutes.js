@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
 const Ingredient = require('../models/Ingredient');
+const authMiddleware = require('../middleware/auth');
+require('dotenv').config();
+
 
 const router = express.Router();
 
@@ -30,8 +33,9 @@ router.post('/login', async (req, res) => {
     if (!user) return res.status(400).json({ message: 'Cannot find user' });
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) return res.status(400).json({ message: 'Invalid password' });
-    const token = jwt.sign({ username }, 'SECRET_KEY', { expiresIn: '2h' });
-    res.json({ token });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '2h' });
+
+    res.json({ token, userId: user._id }); 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -39,7 +43,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/recipes', async (req, res) => {
   try {
-    const { name, effects, ingredients, imageFilename, description } = req.body;  // include description here
+    const { name, effects, ingredients, imageFilename, description, userId } = req.body;  // include description here
 
     console.log("Incoming Request Body: ", req.body); // Added this line for debugging
 
@@ -55,7 +59,8 @@ router.post('/recipes', async (req, res) => {
       effects,
       ingredients: ingredientIds,
       imageFilename,
-      description,  // and here
+      description, 
+      userId,
       // createdBy: req.user._id, // Uncomment this if you want to save who created the recipe
     });
 
@@ -97,12 +102,24 @@ router.get('/recipes/search', async (req, res) => {
   }
 });
 
-
-
 //  Get all recipes
 router.get('/recipes', async (req, res) => {
   try {
     const recipes = await Recipe.find().populate('ingredients');
+    res.status(200).json(recipes);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+// Get all of one users recipes
+router.get('/my-recipes', authMiddleware, async (req, res) => {
+  try {
+    console.log(req.headers);  // debugging -  log headers
+    console.log(req.user); // debugging - log user object populated by middleware
+    const userId = req.user._id; 
+    const recipes = await Recipe.find({ userId: userId }).populate('ingredients');
     res.status(200).json(recipes);
   } catch (err) {
     console.error(err);
@@ -121,9 +138,6 @@ router.get('/recipes/:id', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
-
-
-
 
 
 module.exports = router;
