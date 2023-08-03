@@ -105,7 +105,7 @@ router.get('/recipes/search', async (req, res) => {
 //  Get all recipes
 router.get('/recipes', async (req, res) => {
   try {
-    const recipes = await Recipe.find().populate('ingredients');
+    const recipes = await Recipe.find().populate('ingredients').populate('userId');
     res.status(200).json(recipes);
   } catch (err) {
     console.error(err);
@@ -116,10 +116,10 @@ router.get('/recipes', async (req, res) => {
 // Get all of one users recipes
 router.get('/my-recipes', authMiddleware, async (req, res) => {
   try {
-    console.log(req.headers);  // debugging -  log headers
+    console.log(req.headers);  // debugging - log headers
     console.log(req.user); // debugging - log user object populated by middleware
     const userId = req.user._id; 
-    const recipes = await Recipe.find({ userId: userId }).populate('ingredients');
+    const recipes = await Recipe.find({ userId: userId }).populate('ingredients').populate('userId');
     res.status(200).json(recipes);
   } catch (err) {
     console.error(err);
@@ -130,8 +130,8 @@ router.get('/my-recipes', authMiddleware, async (req, res) => {
 // Get a single recipe
 router.get('/recipes/:id', async (req, res) => {
   try {
-    const recipe = await Recipe.findById(req.params.id).populate('ingredients');
-    console.log(recipe);  // Add this line
+    const recipe = await Recipe.findById(req.params.id).populate('ingredients').populate('userId');
+    console.log(recipe); 
     res.status(200).json(recipe);
   } catch (err) {
     console.error(err);
