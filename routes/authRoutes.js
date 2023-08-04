@@ -41,9 +41,9 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/recipes', async (req, res) => {
+router.post('/recipes', authMiddleware, async (req, res) => {
   try {
-    const { name, effects, ingredients, imageFilename, description, userId } = req.body;  
+    const { name, effects, ingredients, imageFilename, description, userId, hearts } = req.body;  
 
     console.log("Incoming Request Body: ", req.body); // Added this line for debugging
 
@@ -61,6 +61,7 @@ router.post('/recipes', async (req, res) => {
       imageFilename,
       description, 
       userId,
+      hearts,
       // createdBy: req.user._id, // Uncomment this if you want to save who created the recipe
     });
 
@@ -100,7 +101,27 @@ router.get('/recipes/search', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
+  
 });
+
+//  delete recipe
+
+router.delete('/recipes/:id', authMiddleware, async (req, res) => {
+  try {
+    const recipe = await Recipe.findOneAndRemove({ _id: req.params.id, userId: req.user._id });
+
+    if (!recipe) {
+      return res.status(404).json({ message: 'No recipe found' });
+    }
+
+    res.json({ message: 'Recipe deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
 
 //  Get all recipes
 router.get('/recipes', async (req, res) => {

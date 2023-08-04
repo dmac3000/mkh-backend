@@ -8,6 +8,7 @@ const RecipeSchema = new mongoose.Schema({
   category: { type: String },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   imageFilename: { type: String, required: false },
+  hearts: { type: Number, required: true },
 });
 
 // Text index for the `name` and `effects` fields
