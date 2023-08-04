@@ -111,7 +111,7 @@ router.delete('/recipes/:id', authMiddleware, async (req, res) => {
     const recipe = await Recipe.findOneAndRemove({ _id: req.params.id, userId: req.user._id });
 
     if (!recipe) {
-      return res.status(404).json({ message: 'No recipe found' });
+      return res.status(404).json({ message: `You cannot delete another user's recipe.` });
     }
 
     res.json({ message: 'Recipe deleted successfully' });
@@ -147,6 +147,38 @@ router.get('/my-recipes', authMiddleware, async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+
+// Update a recipe
+
+router.put('/recipes/:id', authMiddleware, async (req, res) => {
+  try {
+    const { name, effects, ingredients, imageFilename, description, userId, hearts } = req.body;
+
+    // Convert ingredient names to ids
+    const ingredientPromises = ingredients.map(ingredientName => Ingredient.findOne({ name: ingredientName }));
+    const ingredientDocs = await Promise.all(ingredientPromises);
+    const ingredientIds = ingredientDocs.map(ingredient => ingredient._id);
+
+    // Find the recipe and update it
+    const recipe = await Recipe.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      { name, effects, ingredients: ingredientIds, imageFilename, description, userId, hearts },
+      { new: true } // This option returns the updated document
+    );
+
+    if (!recipe) {
+      return res.status(404).json({ message: 'No recipe found or you are not the owner of this recipe' });
+    }
+
+    res.json(recipe);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
 
 // Get a single recipe
 router.get('/recipes/:id', async (req, res) => {
