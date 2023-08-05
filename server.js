@@ -13,6 +13,10 @@ mongoose.connect('mongodb://localhost:27017/myKitchenHyrules', { useNewUrlParser
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error(err));
 
-app.listen(3333, () => {
-  console.log('Server listening on port 3333');
-});
+if (require.main === module) {
+  app.listen(3333, () => {
+    console.log('Server listening on port 3333');
+  });
+}
+
+module.exports = app;

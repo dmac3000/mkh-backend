@@ -41,6 +41,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Create a Recipe
 router.post('/recipes', authMiddleware, async (req, res) => {
   try {
     const { name, effects, ingredients, imageFilename, description, userId, hearts } = req.body;  
@@ -77,6 +78,7 @@ router.post('/recipes', authMiddleware, async (req, res) => {
   }
 });
 
+// ingredients endpoint
 router.get('/ingredients', async (req, res) => {
   try {
     const ingredients = await Ingredient.find({}); // Find all ingredients
