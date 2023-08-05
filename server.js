@@ -9,10 +9,11 @@ app.use(cors()); // Use the cors middleware
 app.use(express.json());
 app.use('/api', authRoutes);
 
-// Note the change in the connection string. We're now using process.env.MONGODB_URI
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/myKitchenHyrules', { useNewUrlParser: true, useUnifiedTopology: true })
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error(err));
+
 
 // We've changed the port number to be set from the environment variable
 const port = process.env.PORT || 3333;

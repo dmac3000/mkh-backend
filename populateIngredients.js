@@ -23,6 +23,7 @@ const ingredients = [
     { name: 'Large Zonai Charge', imageFilename: 'large-zonai-charge.png' },
     { name: 'Monster Extract', imageFilename: 'assets/ingredient-icons/monster-extract.png' },
     { name: 'Oil Jar', imageFilename: 'assets/ingredient-icons/oil-jar.png' },
+    { name: 'Rock Salt', imageFilename: 'assets/ingredient-icons/rock-salt.png' },
     { name: 'Star Fragment', imageFilename: 'assets/ingredient-icons/star-fragment.png' },
     { name: 'Tabantha Wheat', imageFilename: 'assets/ingredient-icons/tabantha-wheat.png' },
     { name: 'Wood', imageFilename: 'wood.png' },
